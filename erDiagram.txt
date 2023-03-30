@@ -1,0 +1,339 @@
+UC-1
+Ability to create a payroll
+service database
+- Using MSSQL Client use create database
+query to create a payroll_service
+database
+- Also you can see the DB created by
+using show database query
+- And go to the database created by using
+use payroll_service query
+mysql> create database payroll_service;
+Query OK, 1 row affected (0.04 sec)
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employee           |
+| information_schema |
+| kundan             |
+| kundanschool       |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+UC-2:-
+Ability to create a employee payroll table
+in the payroll service database to
+manage employee payrolls
+- Use payroll_service database in MSSQL Client
+- Use Create Table employee_payroll Query
+to create employee payroll table with columns id,
+name, salary and start date as column. Note Id is set to
+auto increment.
+- Understand the SQL data types to be used for the
+table
+- Note: SQL Queries as case insensitive
+mysql> use payroll_service;
+Database changed
+mysql> select database();
++-----------------+
+| database()      |
++-----------------+
+| payroll_service |
++-----------------+
+1 row in set (0.00 sec)
+mysql> create table employee_payroll(empid int auto_increment primary key,name varchar(100),salary int,start_Date DATE);
+Query OK, 0 rows affected (0.08 sec)
+mysql> describe employee_payroll;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| empid      | int          | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(100) | YES  |     | NULL    |                |
+| salary     | int          | YES  |     | NULL    |                |
+| start_Date | date         | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.04 sec)
+UC-3:-
+Ability to create employee
+payroll data in the payroll
+service database as part of
+CRUD Operation - Use payroll_service database in
+MSSQL Client
+- Use INSERT INTO employee_payroll
+Query to create employees payroll
+data into the employee_payroll table
+mysql> INSERT INTO employee_payroll(name,salary,start_date) values('kundan',600000,'2023-03-28'), ('satya',500000,'2023-03-25'), ('shubham',400000,'2023-03-24');
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+UC-4:-
+Ability to retrieve all the
+employee payroll data that is
+added to payroll service
+database
+- Use payroll_service database in MSSQL
+Client
+- Use SELECT * FROM employee_payroll to
+retrieve all the data from the
+employee_payroll table
+mysql> select * from employee_payroll;
++-------+---------+--------+------------+
+| empid | name    | salary | start_Date |
++-------+---------+--------+------------+
+|     1 | kundan  | 600000 | 2023-03-28 |
+|     2 | satya   | 500000 | 2023-03-25 |
+|     3 | shubham | 400000 | 2023-03-24 |
++-------+---------+--------+------------+
+3 rows in set (0.02 sec)
+UC-5:-
+Ability to retrieve salary data for a particular
+employee as well as all employees who have
+joined in a particular data range from the
+payroll service database
+- Use SELECT salary FROM employee_payroll
+WHERE name = 'Bill’ Query to View Bill’s salary
+- Use Select query with Where condition View employees
+between start dates
+- Query: WHERE start BETWEEN CAST('2018-01-01'
+AS DATE) AND DATE(NOW());
+- Note: Where Condition Clause is used to retrieve the row needed
+from the table
+- Note: Use of Database Functions like CAST() and NOW() in the
+Query
+mysql> select salary from employee_payroll where name = "kundan";
++--------+
+| salary |
++--------+
+| 600000 |
++--------+
+1 row in set (0.02 sec)
+mysql> select * from employee_payroll where cast('2023-03-25' as DATE) and DATE(NOW());
++-------+---------+--------+------------+
+| empid | name    | salary | start_Date |
++-------+---------+--------+------------+
+|     1 | kundan  | 600000 | 2023-03-28 |
+|     2 | satya   | 500000 | 2023-03-25 |
+|     3 | shubham | 400000 | 2023-03-24 |
++-------+---------+--------+------------+
+3 rows in set (0.02 sec)
+UC-6:-
+Ability to add Gender to Employee
+Payroll Table and Update the Rows to
+reflect the correct Employee Gender
+- Use payroll_service database in MSSQL Client
+- Use Alter Table Command to add Field gender after
+the name field
+- Use Update Query to set the gender using where
+condition with the employee name
+- E.g. UPDATE employee_payroll set gender =
+'M' where name = 'Bill' or name =
+'Charlie';
+mysql> alter table employee_payroll add column gender varchar(55) after name;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+mysql> select * from employee_payroll;
++-------+---------+--------+--------+------------+
+| empid | name    | gender | salary | start_Date |
++-------+---------+--------+--------+------------+
+|     1 | kundan  | NULL   | 600000 | 2023-03-28 |
+|     2 | satya   | NULL   | 500000 | 2023-03-25 |
+|     3 | shubham | NULL   | 400000 | 2023-03-24 |
++-------+---------+--------+--------+------------+
+3 rows in set (0.02 sec)
+mysql> update employee_payroll set gender = 'M' where name = 'kundan';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+mysql> update employee_payroll set gender = 'M' where name = 'satya';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+mysql> update employee_payroll set gender = 'M' where name = 'shubham';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+mysql> select * from employee_payroll;
++-------+---------+--------+--------+------------+
+| empid | name    | gender | salary | start_Date |
++-------+---------+--------+--------+------------+
+|     1 | kundan  | M      | 600000 | 2023-03-28 |
+|     2 | satya   | M      | 500000 | 2023-03-25 |
+|     3 | shubham | M      | 400000 | 2023-03-24 |
++-------+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+UC-7:-
+Ability to find sum, average, min, max
+and number of male and female
+employees
+- Use payroll_service database in MSSQL Client
+- Use Database Function SUM, AVG, MIN, MAX, COUNT
+to do analysis by Male or Female.
+- Note: You will need to use GROUP BY GENDER grouping to
+get the result
+- E.g. SELECT SUM(salary) FROM employee_payroll
+WHERE gender = 'F' GROUP BY gender;
+mysql> select SUM(salary) from employee_payroll where gender = "M" group by gender;
++-------------+
+| SUM(salary) |
++-------------+
+|     1500000 |
++-------------+
+1 row in set (0.02 sec)
+mysql> select AVG(salary) from employee_payroll where gender = "M" group by gender;
++-------------+
+| AVG(salary) |
++-------------+
+| 500000.0000 |
++-------------+
+1 row in set (0.00 sec)
+mysql> select MAX(salary) from employee_payroll where gender = "M" group by gender;
++-------------+
+| MAX(salary) |
++-------------+
+|      600000 |
++-------------+
+1 row in set (0.02 sec)
+mysql> select MIN(salary) from employee_payroll where gender = "M" group by gender;
++-------------+
+| MIN(salary) |
++-------------+
+|      400000 |
++-------------+
+1 row in set (0.00 sec)
+mysql> select count(salary) from employee_payroll where gender = "M" group by gender;
++---------------+
+| count(salary) |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.00 sec)
+
+UC-8:- 
+
+Ability to extend employee_payroll data to store employee information like employee phone, address
+and department - Ensure employee department is non
+nullable fields.
+- Add Default Value for address field.
+
+
+mysql> alter table employee_payroll add emp_phone varchar(15);
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+No connection. Trying to reconnect...
+Connection id:    9
+Current database: payroll_service
+
+Query OK, 0 rows affected (0.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add Address varchar(55) default 'sheohar';
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add department varchar(30) NOT NULL;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE_PAYROLL;
++-------+---------+--------+--------+------------+-----------+---------+------------+
+| empid | name    | gender | salary | start_Date | emp_phone | Address | department |
++-------+---------+--------+--------+------------+-----------+---------+------------+
+|     1 | kundan  | M      | 600000 | 2023-03-28 | NULL      | sheohar |            |
+|     2 | satya   | M      | 500000 | 2023-03-25 | NULL      | sheohar |            |
+|     3 | shubham | M      | 400000 | 2023-03-24 | NULL      | sheohar |            |
++-------+---------+--------+--------+------------+-----------+---------+------------+
+3 rows in set (0.02 sec)
+
+UC-9:- 
+Ability to extend
+employee_payroll table
+to have Basic Pay,
+Deductions, Taxable Pay,
+Income Tax, Net Pay
+
+mysql> alter table employee_payroll add Basic_Pay varchar(30);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add deductions varchar(30);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add taxable_Pay varchar(30);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add Income Tax varchar(30);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Tax varchar(30)' at line 1
+mysql> alter table employee_payroll add Income_Tax varchar(30);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add Net_Pay varchar(30);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE_PAYROLL;
++-------+---------+--------+--------+------------+-----------+---------+------------+-----------+------------+-------------+------------+---------+
+| empid | name    | gender | salary | start_Date | emp_phone | Address | department | Basic_Pay | deductions | taxable_Pay | Income_Tax | Net_Pay |
++-------+---------+--------+--------+------------+-----------+---------+------------+-----------+------------+-------------+------------+---------+
+|     1 | kundan  | M      | 600000 | 2023-03-28 | NULL      | sheohar |            | NULL      | NULL       | NULL        | NULL       | NULL    |
+|     2 | satya   | M      | 500000 | 2023-03-25 | NULL      | sheohar |            | NULL      | NULL       | NULL        | NULL       | NULL    |
+|     3 | shubham | M      | 400000 | 2023-03-24 | NULL      | sheohar |            | NULL      | NULL       | NULL        | NULL       | NULL    |
++-------+---------+--------+--------+------------+-----------+---------+------------+-----------+------------+-------------+------------+---------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+UC-10:- 
+Ability to make one person as part of frontend and backend both the department.
+
+mysql> create table department (dept_id int primary key, dept_name varchar(55));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into department(dept_id,dept_name) values(1,'frontend'),(2,'backend');
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from department;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|       1 | frontend  |
+|       2 | backend   |
++---------+-----------+
+2 rows in set (0.00 sec)
+
+UC-11:-
+For many to many relationship creating a junction table.
+
+mysql> create table employee_department(emp_id int NOT NULL,dept_id int NOT NULL, Foreign key(emp_id) REFERENCES employee_payroll(empid), Foreign key(dept_id) References department(dept_id));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> insert into employee_department(emp_id,dept_id) values(1,1),(1,2);
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_department;
++--------+---------+
+| emp_id | dept_id |
++--------+---------+
+|      1 |       1 |
+|      1 |       2 |
++--------+---------+
+2 rows in set (0.00 sec)
+
+UC-12:-
+Establish many to many relationship.
+
+mysql> Select employee_payroll.empid,employee_payroll.name,department.dept_id,department.dept_name From employee_payroll join employee_department ON (employee_department.emp_id = employee_payroll.empid) join department ON (department.dept_id = employee_department.dept_id);
++-------+--------+---------+-----------+
+| empid | name   | dept_id | dept_name |
++-------+--------+---------+-----------+
+|     1 | kundan |       1 | frontend  |
+|     1 | kundan |       2 | backend   |
++-------+--------+---------+-----------+
+2 rows in set (0.07 sec)
